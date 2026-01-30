@@ -1,0 +1,40 @@
+name: Monitor Website Availability
+
+on:
+  schedule:
+    - cron: "0 6 * * *"   # Täglich 06:00 Uhr
+  workflow_dispatch:       # Manuelle Ausführung möglich
+
+jobs:
+  check-website:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Check website
+        id: check
+        run: python check_site.py
+
+      # Wird ausgeführt, wenn check_site.py einen Fehlercode zurückgibt
+      - name: Create GitHub Issue if down
+        if: failure()
+        uses: actions-ecosystem/action-create-issue@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          title: "Integrationsmonitoring nicht erreichbar"
+          body: |
+            Das tägliche Monitoring hat festgestellt, dass
+            https://integrationsmonitoring.niedersachsen.de/
+            **nicht erreichbar** war.
+
+            Workflow-Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
