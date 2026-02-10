@@ -1,6 +1,6 @@
 import requests
 
-URL = "https://integrationsmonitoringXX.niedersachsen.de/"
+URL = "https://integrationsmonitoring.niedersachsen.de/"
 
 try:
     response = requests.get(URL, timeout=20)
