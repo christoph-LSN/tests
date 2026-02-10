@@ -10,7 +10,7 @@ Bitte Änderungen hier vornehmen
 | Wert D   | Wert E   | Wert F   |
 
 # Hier kommen noch weitere tests
-Tomatensaft
+
 Birnensaft
 Gurkenwasser
 Saftpresse
